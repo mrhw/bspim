@@ -10,10 +10,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class CountryCodeService {
+public class CountryService {
     private final HolidayApiClient holidayApiClient;
 
-    public CountryCodeService(HolidayApiClient holidayApiClient) {
+    public CountryService(HolidayApiClient holidayApiClient) {
         this.holidayApiClient = holidayApiClient;
     }
 
