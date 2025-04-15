@@ -16,18 +16,18 @@ import static com.bspim.holiday.util.HolidayUtil.getHolidayNameByDate;
 public class HolidayServiceImpl implements HolidayService {
 
     private final HolidayApiClient holidayApiClient;
-    private final CountryCodeService countryCodeService;
+    private final CountryService countryService;
 
-    public HolidayServiceImpl(HolidayApiClient holidayApiClient, CountryCodeService countryCodeService) {
+    public HolidayServiceImpl(HolidayApiClient holidayApiClient, CountryService countryService) {
         this.holidayApiClient = holidayApiClient;
-        this.countryCodeService = countryCodeService;
+        this.countryService = countryService;
     }
 
     @Override
     @Cacheable(value = "holidaysCache", key = "#request.countryCode1 + '-'+ #request.countryCode2 +'-'+#request.date")
     public HolidayResponse findFirstCommonHoliday(HolidayRequest request) {
-        Set<Holiday> holidaysCountry1 = holidayApiClient.getHolidays(countryCodeService.getCountry(request.getCountryCode1()), request.getDate());
-        Set<Holiday> holidaysCountry2 = holidayApiClient.getHolidays(countryCodeService.getCountry(request.getCountryCode2()), request.getDate());
+        Set<Holiday> holidaysCountry1 = holidayApiClient.getHolidays(countryService.getCountry(request.getCountryCode1()), request.getDate());
+        Set<Holiday> holidaysCountry2 = holidayApiClient.getHolidays(countryService.getCountry(request.getCountryCode2()), request.getDate());
 
         return findFirstCommonHoliday(holidaysCountry1, holidaysCountry2, request.getDate());
     }

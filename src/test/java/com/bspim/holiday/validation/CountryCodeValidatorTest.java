@@ -1,7 +1,7 @@
 package com.bspim.holiday.validation;
 
 import com.bspim.holiday.dto.ValidCountryCode;
-import com.bspim.holiday.service.CountryCodeService;
+import com.bspim.holiday.service.CountryService;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 class CountryCodeValidatorTest {
 
     @Mock
-    private CountryCodeService countryCodeService;
+    private CountryService countryService;
 
     @Mock
     private ConstraintValidatorContext context;
@@ -27,12 +27,12 @@ class CountryCodeValidatorTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        countryCodeValidator = new CountryCodeValidator(countryCodeService);
+        countryCodeValidator = new CountryCodeValidator(countryService);
     }
 
     @Test
     void isValid_ShouldReturnTrue_ForValidCountryCode() {
-        when(countryCodeService.fetchValidCountryCodes()).thenReturn(Set.of("US", "CA"));
+        when(countryService.fetchValidCountryCodes()).thenReturn(Set.of("US", "CA"));
         countryCodeValidator.initialize(mock(ValidCountryCode.class));
 
         assertTrue(countryCodeValidator.isValid("US", context));
@@ -41,7 +41,7 @@ class CountryCodeValidatorTest {
 
     @Test
     void isValid_ShouldReturnFalse_ForValidCountryCode() {
-        when(countryCodeService.fetchValidCountryCodes()).thenReturn(Set.of("US", "CA"));
+        when(countryService.fetchValidCountryCodes()).thenReturn(Set.of("US", "CA"));
         countryCodeValidator.initialize(mock(ValidCountryCode.class));
 
         assertFalse(countryCodeValidator.isValid("XX", context));

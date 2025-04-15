@@ -24,13 +24,13 @@ class HolidayServiceImplTest {
     @Mock
     private HolidayApiClient holidayApiClient;
     @Mock
-    private CountryCodeService countryCodeService;
+    private CountryService countryService;
     private HolidayServiceImpl holidayServiceImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        holidayServiceImpl = new HolidayServiceImpl(holidayApiClient, countryCodeService);
+        holidayServiceImpl = new HolidayServiceImpl(holidayApiClient, countryService);
     }
 
     @Test
@@ -41,8 +41,8 @@ class HolidayServiceImplTest {
         HolidayRequest request = new HolidayRequest("US", "CA", LocalDate.of(2024, 12, 24));
         Country countryUS = new Country("US", new String[]{"en"});
         Country countryCA = new Country("CA", new String[]{"en"});
-        when(countryCodeService.getCountry("US")).thenReturn(countryUS);
-        when(countryCodeService.getCountry("CA")).thenReturn(countryCA);
+        when(countryService.getCountry("US")).thenReturn(countryUS);
+        when(countryService.getCountry("CA")).thenReturn(countryCA);
 
         Set<Holiday> holidaysUS = new HashSet<>(Arrays.asList(holidayUS));
         Set<Holiday> holidaysCA = new HashSet<>(Arrays.asList(holidayCA));
@@ -65,8 +65,8 @@ class HolidayServiceImplTest {
         Holiday holidayCA = new Holiday("2023-07-01", "Canada Day");
         Country countryUS = new Country("US", new String[]{"en"});
         Country countryCA = new Country("CA", new String[]{"en"});
-        when(countryCodeService.getCountry("US")).thenReturn(countryUS);
-        when(countryCodeService.getCountry("CA")).thenReturn(countryCA);
+        when(countryService.getCountry("US")).thenReturn(countryUS);
+        when(countryService.getCountry("CA")).thenReturn(countryCA);
 
         when(holidayApiClient.getHolidays(countryUS, LocalDate.of(2024, 12, 24))).thenReturn(Set.of(holidayUS));
         when(holidayApiClient.getHolidays(countryCA, LocalDate.of(2024, 12, 24))).thenReturn(Set.of(holidayCA));

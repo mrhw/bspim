@@ -13,16 +13,16 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class CountryCodeServiceTest {
+class CountryServiceTest {
     @Mock
     private HolidayApiClient holidayApiClient;
 
-    private CountryCodeService countryCodeService;
+    private CountryService countryService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        countryCodeService = new CountryCodeService(holidayApiClient);
+        countryService = new CountryService(holidayApiClient);
     }
 
     @Test
@@ -32,7 +32,7 @@ class CountryCodeServiceTest {
                 new Country("CA", new String[]{"en"}));
         when(holidayApiClient.getCountries()).thenReturn(mockCountryList);
 
-        List<Country> result = countryCodeService.fetchCountries();
+        List<Country> result = countryService.fetchCountries();
 
         assertNotNull(result);
         assertEquals(mockCountryList.size(), result.size());
@@ -47,7 +47,7 @@ class CountryCodeServiceTest {
 
         when(holidayApiClient.getCountries()).thenReturn(mockCountryList);
 
-        Country result = countryCodeService.getCountry("US");
+        Country result = countryService.getCountry("US");
         assertNotNull(result);
         assertEquals("US", result.code());
     }
@@ -60,7 +60,7 @@ class CountryCodeServiceTest {
 
         when(holidayApiClient.getCountries()).thenReturn(mockCountryList);
 
-        CountryNotFoundException exception = assertThrows(CountryNotFoundException.class, () -> countryCodeService.getCountry("XX"));
+        CountryNotFoundException exception = assertThrows(CountryNotFoundException.class, () -> countryService.getCountry("XX"));
         assertEquals("Country with code XX not found", exception.getMessage());
     }
 
@@ -72,7 +72,7 @@ class CountryCodeServiceTest {
 
         when(holidayApiClient.getCountries()).thenReturn(mockCountryList);
 
-        Set<String> result = countryCodeService.fetchValidCountryCodes();
+        Set<String> result = countryService.fetchValidCountryCodes();
         assertNotNull(result);
         assertEquals(mockCountryList.size(), result.size());
         assertTrue(result.contains("US"));
