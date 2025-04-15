@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Component
 public class HolidayApiClient {
@@ -24,7 +25,7 @@ public class HolidayApiClient {
         this.clientProperties = clientProperties;
     }
 
-    public List<Holiday> getHolidays(Country country, LocalDate date) {
+    public Set<Holiday> getHolidays(Country country, LocalDate date) {
         String query = String.format("holidays?country=%s&year=%s&key=%s&language=%s", country.code(), date.getYear(), clientProperties.getKey(), country.languages()[0]);
         try {
             ExternalHolidayResponse holidays = restTemplate.getForObject(clientProperties.getUrl() + query, ExternalHolidayResponse.class);
