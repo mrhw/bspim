@@ -7,7 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import static com.bspim.holiday.util.HolidayUtil.findFirstDateAfter;
 import static com.bspim.holiday.util.HolidayUtil.getHolidayNameByDate;
@@ -26,13 +26,13 @@ public class HolidayServiceImpl implements HolidayService {
     @Override
     @Cacheable(value = "holidaysCache", key = "#request.countryCode1 + '-'+ #request.countryCode2 +'-'+#request.date")
     public HolidayResponse findFirstCommonHoliday(HolidayRequest request) {
-        List<Holiday> holidaysCountry1 = holidayApiClient.getHolidays(countryCodeService.getCountry(request.getCountryCode1()), request.getDate());
-        List<Holiday> holidaysCountry2 = holidayApiClient.getHolidays(countryCodeService.getCountry(request.getCountryCode2()), request.getDate());
+        Set<Holiday> holidaysCountry1 = holidayApiClient.getHolidays(countryCodeService.getCountry(request.getCountryCode1()), request.getDate());
+        Set<Holiday> holidaysCountry2 = holidayApiClient.getHolidays(countryCodeService.getCountry(request.getCountryCode2()), request.getDate());
 
         return findFirstCommonHoliday(holidaysCountry1, holidaysCountry2, request.getDate());
     }
 
-    public static HolidayResponse findFirstCommonHoliday(List<Holiday> holidays1, List<Holiday> holidays2, LocalDate date) {
+    public static HolidayResponse findFirstCommonHoliday(Set<Holiday> holidays1, Set<Holiday> holidays2, LocalDate date) {
         holidays1.retainAll(holidays2);
         final String commonDate = findFirstDateAfter(date, holidays1);
         return new HolidayResponse(

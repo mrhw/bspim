@@ -1,7 +1,7 @@
 package com.bspim.holiday.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.List;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record ExternalHolidayResponse(List<Holiday> holidays) {
+public record ExternalHolidayResponse(Set<Holiday> holidays) {
 }

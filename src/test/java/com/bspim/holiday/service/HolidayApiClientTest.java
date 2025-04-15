@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -38,18 +39,18 @@ class HolidayApiClientTest {
     void getHolidays_shouldReturnListOfHolidays() {
         Country country = new Country("US", new String[]{"en"});
         LocalDate date = LocalDate.of(2023, 12, 25);
-        List<Holiday> mockHolidays = List.of(new Holiday("2023-12-25", "Christmas"));
+        Set<Holiday> mockHolidays = Set.of(new Holiday("2023-12-25", "Christmas"));
         ExternalHolidayResponse mockResponse = new ExternalHolidayResponse(mockHolidays);
 
         when(clientProperties.getUrl()).thenReturn("http://example.com/api/");
         when(clientProperties.getKey()).thenReturn("test-key");
         when(restTemplate.getForObject("http://example.com/api/holidays?country=US&year=2023&key=test-key&language=en", ExternalHolidayResponse.class)).thenReturn(mockResponse);
 
-        List<Holiday> holidays = holidayApiClient.getHolidays(country, date);
+        Set<Holiday> holidays = holidayApiClient.getHolidays(country, date);
 
         assertNotNull(holidays);
         assertEquals(holidays.size(), mockHolidays.size());
-        assertEquals("Christmas", mockHolidays.get(0).name());
+        assertEquals("Christmas", mockHolidays.stream().toList().get(0).name());
     }
 
     @Test

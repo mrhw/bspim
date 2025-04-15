@@ -13,6 +13,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -42,8 +44,11 @@ class HolidayServiceImplTest {
         when(countryCodeService.getCountry("US")).thenReturn(countryUS);
         when(countryCodeService.getCountry("CA")).thenReturn(countryCA);
 
-        when(holidayApiClient.getHolidays(countryUS, LocalDate.of(2024, 12, 24))).thenReturn(Arrays.asList(holidayUS));
-        when(holidayApiClient.getHolidays(countryCA, LocalDate.of(2024, 12, 24))).thenReturn(Arrays.asList(holidayCA));
+        Set<Holiday> holidaysUS = new HashSet<>(Arrays.asList(holidayUS));
+        Set<Holiday> holidaysCA = new HashSet<>(Arrays.asList(holidayCA));
+
+        when(holidayApiClient.getHolidays(countryUS, LocalDate.of(2024, 12, 24))).thenReturn(holidaysUS);
+        when(holidayApiClient.getHolidays(countryCA, LocalDate.of(2024, 12, 24))).thenReturn(holidaysCA);
 
         HolidayResponse holidayResponse = holidayServiceImpl.findFirstCommonHoliday(request);
 
@@ -63,8 +68,8 @@ class HolidayServiceImplTest {
         when(countryCodeService.getCountry("US")).thenReturn(countryUS);
         when(countryCodeService.getCountry("CA")).thenReturn(countryCA);
 
-        when(holidayApiClient.getHolidays(countryUS, LocalDate.of(2024, 12, 24))).thenReturn(Arrays.asList(holidayUS));
-        when(holidayApiClient.getHolidays(countryCA, LocalDate.of(2024, 12, 24))).thenReturn(Arrays.asList(holidayCA));
+        when(holidayApiClient.getHolidays(countryUS, LocalDate.of(2024, 12, 24))).thenReturn(Set.of(holidayUS));
+        when(holidayApiClient.getHolidays(countryCA, LocalDate.of(2024, 12, 24))).thenReturn(Set.of(holidayCA));
 
         Assertions.assertThrows(HolidayNotFoundException.class, () -> holidayServiceImpl.findFirstCommonHoliday(request));
     }
