@@ -11,11 +11,11 @@ Application requires JDK 17 to run. \
 In order to compile and run application from the sources follow steps below:
 - Unix/Linux: \
   ./mvnw clean install \
-  java -jar target/holidays-0.0.1-SNAPSHOT.jar --external.key=<API_KEY>
+  java -jar target/holiday-0.0.1-SNAPSHOT.jar --external.key=<API_KEY>
 
 - Windows:  \
   ./mvnw.cmd clean install \
-  java -jar target/holidays-0.0.1-SNAPSHOT.jar --external.key=<API_KEY>
+  java -jar target/holiday-0.0.1-SNAPSHOT.jar --external.key=<API_KEY>
 
 ## Example
 Assuming our account is registered @holidayapi.com and our local service is running with API_KEY, we can perform our first check!
